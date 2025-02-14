@@ -1,6 +1,6 @@
 # vup
 
-A version manager for semantic version based strings
+A version manager for semantic version based strings.
 
 ## Getting started
 
