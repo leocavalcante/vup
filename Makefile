@@ -1,5 +1,5 @@
 vup:
-	@go build -o bin .
+	@CGO_ENABLED=0 go build -o bin .
 
 .PHONY: test
 test:
@@ -12,3 +12,7 @@ install:
 .PHONY: lint
 lint:
 	@go tool golangci-lint run
+
+.PHONY: image
+image:
+	@docker build -t vup .
