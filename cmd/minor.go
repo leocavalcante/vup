@@ -20,7 +20,7 @@ var minorCmd = &cobra.Command{
 			return err
 		}
 
-		rb, err := cmd.Flags().GetBool("rollback")
+		rb, err := cmd.Flags().GetBool("downgrade")
 		if err != nil {
 			return err
 		}
@@ -54,6 +54,6 @@ var minorCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(minorCmd)
 	minorCmd.Flags().BoolP("upgrade", "u", false, "Upgrade the minor portion by the given value")
-	minorCmd.Flags().BoolP("rollback", "r", false, "Rollback the minor portion by the given value")
+	minorCmd.Flags().BoolP("downgrade", "d", false, "Downgrade the minor portion by the given value")
 	minorCmd.Flags().IntP("value", "v", 1, "Value to increment or decrement the minor portion")
 }
