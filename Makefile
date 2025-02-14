@@ -1,5 +1,5 @@
 vup:
-	@go build .
+	@go build -o bin .
 
 .PHONY: test
 test:
