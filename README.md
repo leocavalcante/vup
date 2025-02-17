@@ -33,6 +33,10 @@ major.minor.patch
 | `vup minor` | Updates the minor part of the string |
 | `vup patch` | Updates the patch part of the string |
 
+### Prefix
+
+You can use the `v` letter as version prefix, like _v_1.0.1, it will be handled properly.
+
 ### Downgrades
 
 By default `vup` will upgrade (ie. increase) the version number, but you can add the `-d` flag to make downgrades:
