@@ -6,7 +6,11 @@ A version manager for semantic version based strings.
 
 ### Install
 
-TODO
+#### Homebrew
+
+```shell
+brew install leocavalcante/tap/vup
+```
 
 ### Quick start
 
