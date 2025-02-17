@@ -16,3 +16,8 @@ builds:
       - arm64
 
 release:
+
+brews:
+  - repository:
+      owner: leocavalcante
+      name: homebrew-tap
