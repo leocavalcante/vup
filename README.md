@@ -54,12 +54,11 @@ vup major -d v1.2.3
 vup minor -u $(git describe --tags --abbrev=0)
 ```
 
-#### GoReleaser
+#### GoReleaser + Makefile (`make minor`)
 
 ```makefile
 .PHONY: minor
 minor:
 	@git tag $$(go run . minor $$(git describe --tags --abbrev=0))
 	@go tool goreleaser --clean
-
 ```
