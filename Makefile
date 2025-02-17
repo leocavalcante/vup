@@ -16,3 +16,8 @@ lint:
 .PHONY: image
 image:
 	@docker build -t vup .
+
+.PHONY: minor
+minor:
+	@git tag $$(go run . minor $$(git describe --tags --abbrev=0))
+	@go tool goreleaser --clean
