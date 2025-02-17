@@ -12,12 +12,12 @@ TODO
 
 ```shell
 vup minor v0.1.0 
-#v0.2.0
+# v0.2.0
 ```
 
 ```shell
 vup major 1.2.3
-#2.2.3
+# 2.2.3
 ```
 
 ## Usage
@@ -37,7 +37,9 @@ major.minor.patch
 
 By default `vup` will upgrade (ie. increase) the version number, but you can add the `-d` flag to make downgrades:
 ```shell
-vup 
+vup major -d v1.2.3
+# v0.2.3
+```
 
 ### Examples
 
