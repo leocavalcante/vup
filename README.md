@@ -11,18 +11,37 @@ TODO
 ### Quick start
 
 ```shell
-vup minor -u v0.1.0 
+vup minor v0.1.0 
 #v0.2.0
 ```
 
 ```shell
-vup major -d v2.0.0
-#v1.0.0
+vup major 1.2.3
+#2.2.3
 ```
 
 ## Usage
 
-### Combine with `git` tags
+Given a semantic version string
+```
+major.minor.patch
+```
+
+| Command | Description |
+| --- | --- |
+| `vup major` | Updates the major part of the string |
+| `vup minor` | Updates the minor part of the string |
+| `vup patch` | Updates the patch part of the string |
+
+### Downgrades
+
+By default `vup` will upgrade (ie. increase) the version number, but you can add the `-d` flag to make downgrades:
+```shell
+vup 
+
+### Examples
+
+#### Combine with `git` tags
 
 ```shell
 vup minor -u $(git describe --tags --abbrev=0)
