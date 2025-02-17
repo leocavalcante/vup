@@ -29,13 +29,13 @@ major.minor.patch
 
 | Command | Description |
 | --- | --- |
-| `vup major` | Updates the major part of the string |
-| `vup minor` | Updates the minor part of the string |
-| `vup patch` | Updates the patch part of the string |
+| `vup major` | Updates the **major** part of the string |
+| `vup minor` | Updates the **minor** part of the string |
+| `vup patch` | Updates the **patch** part of the string |
 
 ### Prefix
 
-You can use the `v` letter as version prefix, like _v_1.0.1, it will be handled properly.
+You can use the `v` letter as version prefix, like **v**1.0.1, it will be handled properly.
 
 ### Downgrades
 
