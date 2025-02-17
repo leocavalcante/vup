@@ -59,6 +59,6 @@ vup minor -u $(git describe --tags --abbrev=0)
 ```makefile
 .PHONY: minor
 minor:
-	@git tag $$(go run . minor $$(git describe --tags --abbrev=0))
+	@git tag $$(vup minor $$(git describe --tags --abbrev=0))
 	@go tool goreleaser --clean
 ```
