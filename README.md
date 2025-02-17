@@ -22,7 +22,7 @@ vup major 1.2.3
 
 ## Usage
 
-Given a semantic version string
+Given a semantic version string...
 ```
 major.minor.patch
 ```
@@ -36,6 +36,7 @@ major.minor.patch
 ### Downgrades
 
 By default `vup` will upgrade (ie. increase) the version number, but you can add the `-d` flag to make downgrades:
+
 ```shell
 vup major -d v1.2.3
 # v0.2.3
