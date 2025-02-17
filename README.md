@@ -53,3 +53,13 @@ vup major -d v1.2.3
 ```shell
 vup minor -u $(git describe --tags --abbrev=0)
 ```
+
+#### GoReleaser
+
+```makefile
+.PHONY: minor
+minor:
+	@git tag $$(go run . minor $$(git describe --tags --abbrev=0))
+	@go tool goreleaser --clean
+
+```
