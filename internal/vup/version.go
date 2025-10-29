@@ -13,6 +13,9 @@ type Version struct {
 
 func NewVersion(v string) (*Version, error) {
 	ps := strings.Split(v, ".")
+	if len(ps) != 3 {
+		return nil, ErrInvalidSemanticVersion
+	}
 
 	ma, err := NewMajor(ps[0])
 	if err != nil {
