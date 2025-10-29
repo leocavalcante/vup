@@ -29,25 +29,27 @@ def main():
 
     # Run tests
     all_passed = True
-    for test in test_cases:
-        result = subprocess.run(test["command"], shell=True, check=False, capture_output=True)
-        actual_code = result.returncode
-        if actual_code == 0:
-            actual_output = result.stdout.decode().strip()
-        else:
-            actual_output = result.stderr.decode().strip()
+    try:
+        for test in test_cases:
+            result = subprocess.run(test["command"], shell=True, check=False, capture_output=True)
+            actual_code = result.returncode
+            if actual_code == 0:
+                actual_output = result.stdout.decode().strip()
+            else:
+                actual_output = result.stderr.decode().strip()
 
-        if actual_code == test["expected_code"] and test["expected_output"] in actual_output:
-            print(f"PASS: {test['name']}")
-        else:
-            print(f"FAIL: {test['name']}")
-            print(f"  Command: {test['command']}")
-            print(f"  Expected code: {test['expected_code']}, got: {actual_code}")
-            print(f"  Expected output: {test['expected_output']}, got: {actual_output}")
-            all_passed = False
-
-    # Clean up
-    os.remove("vup")
+            if actual_code == test["expected_code"] and test["expected_output"] in actual_output:
+                print(f"PASS: {test['name']}")
+            else:
+                print(f"FAIL: {test['name']}")
+                print(f"  Command: {test['command']}")
+                print(f"  Expected code: {test['expected_code']}, got: {actual_code}")
+                print(f"  Expected output: {test['expected_output']}, got: {actual_output}")
+                all_passed = False
+    finally:
+        # Clean up
+        if os.path.exists("vup"):
+            os.remove("vup")
 
     if not all_passed:
         sys.exit(1)
