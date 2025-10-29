@@ -30,13 +30,12 @@ def main():
     # Run tests
     all_passed = True
     for test in test_cases:
-        try:
-            result = subprocess.run(test["command"], shell=True, check=True, capture_output=True)
+        result = subprocess.run(test["command"], shell=True, check=False, capture_output=True)
+        actual_code = result.returncode
+        if actual_code == 0:
             actual_output = result.stdout.decode().strip()
-            actual_code = result.returncode
-        except subprocess.CalledProcessError as e:
-            actual_output = e.stderr.decode().strip()
-            actual_code = e.returncode
+        else:
+            actual_output = result.stderr.decode().strip()
 
         if actual_code == test["expected_code"] and test["expected_output"] in actual_output:
             print(f"PASS: {test['name']}")
