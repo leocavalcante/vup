@@ -26,7 +26,7 @@ func (m *Minor) Inc(i int) {
 
 func (m *Minor) Dec(i int) error {
 	if m.v-i < 0 {
-		return ErrMinorLessThanOne
+		return ErrMinorLessThanZero
 	}
 	m.v -= i
 	return nil
