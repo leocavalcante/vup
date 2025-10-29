@@ -13,6 +13,9 @@ func NewRC(v string) (Part, error) {
 		}, nil
 	}
 	s := strings.Split(v, "rc")
+	if len(s) < 2 || s[1] == "" {
+		return nil, fmt.Errorf("invalid rc string: %q", v)
+	}
 	i, err := strconv.Atoi(s[1])
 	if err != nil {
 		return nil, err
