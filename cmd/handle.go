@@ -31,33 +31,36 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			return err
 		}
 
-		p, err := cmd.Flags().GetBool("promote")
-		if err != nil {
-			return err
-		}
+		if cmd.Name() == "rc" {
+			p, err := cmd.Flags().GetBool("promote")
+			if err != nil {
+				return err
+			}
 
-		if p {
-			v.RC.Clear()
-			_, err := fmt.Println(v)
-			return err
-		}
-
-		rc, err := cmd.Flags().GetBool("rc")
-		if err != nil {
-			return err
+			if p {
+				v.RC.Clear()
+				_, err := fmt.Println(v)
+				return err
+			}
 		}
 
 		if up && !rb {
 			f(v).Inc(val)
-			if rc {
-				switch cmd.Name() {
-				case "major":
-					v.Minor.Clear()
-					v.Patch.Clear()
-				case "minor":
-					v.Patch.Clear()
+			if cmd.Name() != "rc" {
+				rc, err := cmd.Flags().GetBool("rc")
+				if err != nil {
+					return err
 				}
-				v.RC.Set(1)
+				if rc {
+					switch cmd.Name() {
+					case "major":
+						v.Minor.Clear()
+						v.Patch.Clear()
+					case "minor":
+						v.Patch.Clear()
+					}
+					v.RC.Set(1)
+				}
 			}
 		}
 
