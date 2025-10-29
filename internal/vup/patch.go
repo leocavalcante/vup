@@ -25,12 +25,23 @@ func (p *Patch) Inc(i int) {
 }
 
 func (p *Patch) Dec(i int) error {
-	if p.v <= 0 {
+	if p.v-i < 0 {
 		return ErrPatchLessThanZero
 	}
-
 	p.v -= i
 	return nil
+}
+
+func (p *Patch) Value() int {
+	return p.v
+}
+
+func (p *Patch) Clear() {
+	p.v = 0
+}
+
+func (p *Patch) Set(i int) {
+	p.v = i
 }
 
 func (p *Patch) String() string {

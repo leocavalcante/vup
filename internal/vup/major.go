@@ -35,12 +35,23 @@ func (m *Major) Inc(i int) {
 }
 
 func (m *Major) Dec(i int) error {
-	if m.v <= 0 {
+	if m.v-i < 0 {
 		return ErrMajorLessThanZero
 	}
-
 	m.v -= i
 	return nil
+}
+
+func (m *Major) Value() int {
+	return m.v
+}
+
+func (m *Major) Clear() {
+	m.v = 0
+}
+
+func (m *Major) Set(i int) {
+	m.v = i
 }
 
 func (m *Major) String() string {
