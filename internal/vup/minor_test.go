@@ -36,7 +36,7 @@ func TestMinor_Dec(t *testing.T) {
 	})
 
 	t.Run("error", func(t *testing.T) {
-		m, _ := vup.NewMinor("1")
+		m, _ := vup.NewMinor("0")
 		err := m.Dec(1)
 		assert.ErrorIs(t, err, vup.ErrMinorLessThanOne)
 	})

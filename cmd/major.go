@@ -18,4 +18,5 @@ var majorCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(majorCmd)
+	majorCmd.PersistentFlags().Bool("rc", false, "Creates a new rc tag")
 }
