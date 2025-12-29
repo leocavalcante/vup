@@ -18,4 +18,5 @@ var patchCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(patchCmd)
+	patchCmd.PersistentFlags().Bool("rc", false, "Creates a new rc tag")
 }

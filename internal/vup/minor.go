@@ -25,12 +25,23 @@ func (m *Minor) Inc(i int) {
 }
 
 func (m *Minor) Dec(i int) error {
-	if m.v <= 1 {
-		return ErrMinorLessThanOne
+	if m.v-i < 0 {
+		return ErrMinorLessThanZero
 	}
-
 	m.v -= i
 	return nil
+}
+
+func (m *Minor) Value() int {
+	return m.v
+}
+
+func (m *Minor) Clear() {
+	m.v = 0
+}
+
+func (m *Minor) Set(i int) {
+	m.v = i
 }
 
 func (m *Minor) String() string {
