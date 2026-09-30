@@ -20,16 +20,37 @@ func NewMinor(s string) (*Minor, error) {
 	}, nil
 }
 
-func (m *Minor) Inc(i int) {
-	m.v += i
+func (m *Minor) Inc(i int) error {
+	next, err := increment(m.v, i)
+	if err != nil {
+		return err
+	}
+	m.v = next
+	return nil
 }
 
 func (m *Minor) Dec(i int) error {
-	if m.v <= 1 {
-		return ErrMinorLessThanOne
+	next, err := decrement(m.v, i, ErrMinorLessThanZero)
+	if err != nil {
+		return err
 	}
+	m.v = next
+	return nil
+}
 
-	m.v -= i
+func (m *Minor) Value() int {
+	return m.v
+}
+
+func (m *Minor) Clear() {
+	m.v = 0
+}
+
+func (m *Minor) Set(i int) error {
+	if i < 0 {
+		return ErrMinorLessThanZero
+	}
+	m.v = i
 	return nil
 }
 
