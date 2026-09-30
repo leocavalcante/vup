@@ -16,7 +16,7 @@ func NewVersion(v string) (*Version, error) {
 	var rc string
 	p := strings.Split(v, "-")
 	if len(p) > 2 || (len(p) == 2 && p[1] == "") {
-		return nil, fmt.Errorf("invalid version string: %q", v)
+		return nil, fmt.Errorf("%w: %q", ErrInvalidSemanticVersion, v)
 	}
 	if len(p) == 2 {
 		rc = p[1]
@@ -24,27 +24,31 @@ func NewVersion(v string) (*Version, error) {
 
 	ps := strings.Split(p[0], ".")
 	if len(ps) != 3 {
-		return nil, fmt.Errorf("invalid version string: expected 3 dot-separated parts, got %d", len(ps))
+		return nil, fmt.Errorf(
+			"%w: expected 3 dot-separated parts, got %d",
+			ErrInvalidSemanticVersion,
+			len(ps),
+		)
 	}
 
 	ma, err := NewMajor(ps[0])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	mi, err := NewMinor(ps[1])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	pa, err := NewPatch(ps[2])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	r, err := NewRC(rc)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	return &Version{

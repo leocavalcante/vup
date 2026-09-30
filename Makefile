@@ -4,6 +4,7 @@ vup:
 .PHONY: test
 test:
 	@go test -cover ./...
+	@python3 hack/e2e.py
 
 .PHONY: install
 install:
