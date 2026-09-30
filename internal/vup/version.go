@@ -33,22 +33,22 @@ func NewVersion(v string) (*Version, error) {
 
 	ma, err := NewMajor(ps[0])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	mi, err := NewMinor(ps[1])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	pa, err := NewPatch(ps[2])
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	r, err := NewRC(rc)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrInvalidSemanticVersion, err)
 	}
 
 	return &Version{
