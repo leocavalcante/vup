@@ -46,8 +46,12 @@ func (p *Patch) Clear() {
 	p.v = 0
 }
 
-func (p *Patch) Set(i int) {
+func (p *Patch) Set(i int) error {
+	if i < 0 {
+		return ErrPatchLessThanZero
+	}
 	p.v = i
+	return nil
 }
 
 func (p *Patch) String() string {

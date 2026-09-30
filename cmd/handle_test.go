@@ -138,6 +138,11 @@ func TestHandleRCRules(t *testing.T) {
 			wantErr: "--promote requires an upgrade",
 		},
 		{
+			name:    "promote rejects negative value",
+			args:    []string{"rc", "--promote", "--value=-2", "1.2.3-rc2"},
+			wantErr: "value must not be negative",
+		},
+		{
 			name: "zero patch upgrade keeps rc",
 			args: []string{"patch", "--value=0", "1.2.3-rc2"},
 			want: "1.2.3-rc2",

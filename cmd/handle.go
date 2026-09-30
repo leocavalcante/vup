@@ -30,6 +30,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 		if err != nil {
 			return err
 		}
+		if val < 0 {
+			return fmt.Errorf("value must not be negative")
+		}
 
 		wantRC := false
 		if cmd.Name() != "rc" {
@@ -74,10 +77,6 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 		}
 
-		if val < 0 {
-			return fmt.Errorf("value must not be negative")
-		}
-
 		if up && !rb {
 			if err := f(v).Inc(val); err != nil {
 				return err
@@ -91,7 +90,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 					case "minor":
 						v.Patch.Clear()
 					}
-					v.RC.Set(1)
+					if err := v.RC.Set(1); err != nil {
+						return err
+					}
 				} else {
 					v.RC.Clear()
 				}

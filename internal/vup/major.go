@@ -56,8 +56,12 @@ func (m *Major) Clear() {
 	m.v = 0
 }
 
-func (m *Major) Set(i int) {
+func (m *Major) Set(i int) error {
+	if i < 0 {
+		return ErrMajorLessThanZero
+	}
 	m.v = i
+	return nil
 }
 
 func (m *Major) String() string {

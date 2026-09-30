@@ -36,9 +36,13 @@ type RC struct {
 	present bool
 }
 
-func (r *RC) Set(v int) {
+func (r *RC) Set(v int) error {
+	if v < 0 {
+		return ErrRCLessThanZero
+	}
 	r.value = v
 	r.present = true
+	return nil
 }
 
 func (r *RC) Inc(v int) error {

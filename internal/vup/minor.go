@@ -46,8 +46,12 @@ func (m *Minor) Clear() {
 	m.v = 0
 }
 
-func (m *Minor) Set(i int) {
+func (m *Minor) Set(i int) error {
+	if i < 0 {
+		return ErrMinorLessThanZero
+	}
 	m.v = i
+	return nil
 }
 
 func (m *Minor) String() string {

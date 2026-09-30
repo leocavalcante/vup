@@ -22,7 +22,7 @@ type Part interface {
 	Dec
 	Clear
 	Value() int
-	Set(int)
+	Set(int) error
 }
 
 func increment(value, step int) (int, error) {

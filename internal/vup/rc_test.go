@@ -96,9 +96,18 @@ func TestRC_Dec_Err(t *testing.T) {
 
 func TestRC_Set(t *testing.T) {
 	r := &RC{value: 1}
-	r.Set(10)
+	if err := r.Set(10); err != nil {
+		t.Fatalf("Set() error = %v", err)
+	}
 	if r.Value() != 10 {
 		t.Errorf("Set() = %v, want %v", r.Value(), 10)
+	}
+
+	if err := r.Set(-1); err != ErrRCLessThanZero {
+		t.Errorf("Set(-1) error = %v, want %v", err, ErrRCLessThanZero)
+	}
+	if r.Value() != 10 {
+		t.Errorf("Value() after rejected Set = %v, want 10", r.Value())
 	}
 }
 
