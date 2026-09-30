@@ -69,13 +69,12 @@ def main():
             actual_code = result.returncode
             if actual_code == 0:
                 actual_output = result.stdout.decode().strip()
+                output_ok = actual_output == test["expected_output"]
             else:
                 actual_output = result.stderr.decode().strip()
+                output_ok = test["expected_output"] in actual_output
 
-            if (
-                actual_code == test["expected_code"]
-                and test["expected_output"] in actual_output
-            ):
+            if actual_code == test["expected_code"] and output_ok:
                 print(f"PASS: {test['name']}")
             else:
                 print(f"FAIL: {test['name']}")
