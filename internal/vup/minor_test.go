@@ -23,7 +23,7 @@ func TestMinor(t *testing.T) {
 
 func TestMinor_Inc(t *testing.T) {
 	m, _ := vup.NewMinor("1")
-	m.Inc(1)
+	assert.NoError(t, m.Inc(1))
 	assert.Equal(t, "2", m.String())
 }
 

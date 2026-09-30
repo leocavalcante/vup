@@ -1,6 +1,7 @@
 package vup
 
 import (
+	"math"
 	"testing"
 )
 
@@ -39,10 +40,30 @@ func TestNewRC(t *testing.T) {
 }
 
 func TestRC_Inc(t *testing.T) {
-	r := &RC{value: 1}
-	r.Inc(1)
+	r := &RC{value: 1, present: true}
+	if err := r.Inc(1); err != nil {
+		t.Fatalf("Inc() error = %v", err)
+	}
 	if r.Value() != 2 {
 		t.Errorf("Inc() = %v, want %v", r.Value(), 2)
+	}
+}
+
+func TestRC_Inc_RejectsInvalid(t *testing.T) {
+	r := &RC{value: 1, present: true}
+	if err := r.Inc(-2); err == nil {
+		t.Fatal("Inc(-2) error = nil, want error")
+	}
+	if r.Value() != 1 {
+		t.Errorf("Value() = %v, want 1", r.Value())
+	}
+
+	overflow := &RC{value: math.MaxInt, present: true}
+	if err := overflow.Inc(1); err == nil {
+		t.Fatal("Inc(1) at MaxInt error = nil, want error")
+	}
+	if overflow.Value() != math.MaxInt {
+		t.Errorf("Value() = %v, want MaxInt", overflow.Value())
 	}
 }
 

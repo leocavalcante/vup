@@ -50,8 +50,8 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 
 			if p {
 				v.RC.Clear()
-				cmd.Println(v)
-				return nil
+				_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
+				return err
 			}
 
 			if !rcPresent(v.RC) {
@@ -59,8 +59,14 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 		}
 
+		if val < 0 {
+			return fmt.Errorf("value must not be negative")
+		}
+
 		if up && !rb {
-			f(v).Inc(val)
+			if err := f(v).Inc(val); err != nil {
+				return err
+			}
 			if cmd.Name() != "rc" {
 				if wantRC {
 					switch cmd.Name() {
@@ -84,8 +90,8 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 		}
 
-		cmd.Println(v)
-		return nil
+		_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
+		return err
 	}
 }
 

@@ -20,8 +20,9 @@ func NewPatch(s string) (*Patch, error) {
 	}, nil
 }
 
-func (p *Patch) Inc(i int) {
+func (p *Patch) Inc(i int) error {
 	p.v += i
+	return nil
 }
 
 func (p *Patch) Dec(i int) error {

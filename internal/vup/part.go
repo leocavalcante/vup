@@ -1,7 +1,7 @@
 package vup
 
 type Inc interface {
-	Inc(int)
+	Inc(int) error
 }
 
 type Dec interface {

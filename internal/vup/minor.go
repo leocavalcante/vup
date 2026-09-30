@@ -20,8 +20,9 @@ func NewMinor(s string) (*Minor, error) {
 	}, nil
 }
 
-func (m *Minor) Inc(i int) {
+func (m *Minor) Inc(i int) error {
 	m.v += i
+	return nil
 }
 
 func (m *Minor) Dec(i int) error {

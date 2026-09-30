@@ -23,7 +23,7 @@ func TestPatch(t *testing.T) {
 
 func TestPatch_Inc(t *testing.T) {
 	p, _ := vup.NewPatch("1")
-	p.Inc(1)
+	assert.NoError(t, p.Inc(1))
 	assert.Equal(t, "2", p.String())
 }
 

@@ -87,6 +87,16 @@ func TestHandleRCRules(t *testing.T) {
 			args: []string{"rc", "--promote", "1.2.3-rc2"},
 			want: "1.2.3",
 		},
+		{
+			name:    "negative rc increment",
+			args:    []string{"rc", "-v=-2", "1.2.3-rc1"},
+			wantErr: "must not be negative",
+		},
+		{
+			name:    "negative rc decrement",
+			args:    []string{"rc", "-d", "-v=-2", "1.2.3-rc1"},
+			wantErr: "must not be negative",
+		},
 	}
 
 	for _, tt := range tests {

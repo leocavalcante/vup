@@ -30,8 +30,9 @@ func NewMajor(s string) (*Major, error) {
 	}, nil
 }
 
-func (m *Major) Inc(i int) {
+func (m *Major) Inc(i int) error {
 	m.v += i
+	return nil
 }
 
 func (m *Major) Dec(i int) error {
