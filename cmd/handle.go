@@ -40,6 +40,12 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			if wantRC && rb {
 				return fmt.Errorf("--rc cannot be combined with --downgrade")
 			}
+			if wantRC && !up {
+				return fmt.Errorf("--rc requires an upgrade")
+			}
+			if wantRC && val == 0 {
+				return fmt.Errorf("--rc requires a positive version step")
+			}
 		}
 
 		if cmd.Name() == "rc" {
@@ -49,6 +55,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 
 			if p {
+				if !rcPresent(v.RC) {
+					return fmt.Errorf("rc command requires an existing rc suffix")
+				}
 				v.RC.Clear()
 				_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
 				return err
@@ -87,6 +96,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			err := f(v).Dec(val)
 			if err != nil {
 				return err
+			}
+			if cmd.Name() != "rc" {
+				v.RC.Clear()
 			}
 		}
 

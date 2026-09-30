@@ -79,10 +79,18 @@ func TestRC_Dec(t *testing.T) {
 }
 
 func TestRC_Dec_Err(t *testing.T) {
-	r := &RC{value: 0}
+	r := &RC{value: 0, present: true}
 	err := r.Dec(1)
 	if err != ErrInvalidVersion {
 		t.Errorf("Dec() error = %v, wantErr %v", err, ErrInvalidVersion)
+	}
+
+	negative := &RC{value: 1, present: true}
+	if err := negative.Dec(-1); err == nil {
+		t.Fatal("Dec(-1) error = nil, want error")
+	}
+	if negative.Value() != 1 {
+		t.Errorf("Value() = %v, want 1", negative.Value())
 	}
 }
 

@@ -55,7 +55,10 @@ func (r *RC) Inc(v int) error {
 }
 
 func (r *RC) Dec(v int) error {
-	if r.value-v < 0 {
+	if v < 0 {
+		return fmt.Errorf("rc decrement must not be negative")
+	}
+	if v > r.value {
 		return ErrInvalidVersion
 	}
 	r.value -= v

@@ -97,6 +97,26 @@ func TestHandleRCRules(t *testing.T) {
 			args:    []string{"rc", "-d", "-v=-2", "1.2.3-rc1"},
 			wantErr: "must not be negative",
 		},
+		{
+			name:    "rc flag without an upgrade",
+			args:    []string{"patch", "--rc", "--upgrade=false", "1.2.3"},
+			wantErr: "--rc requires an upgrade",
+		},
+		{
+			name:    "promote without an rc suffix",
+			args:    []string{"rc", "--promote", "1.2.3"},
+			wantErr: "existing rc suffix",
+		},
+		{
+			name:    "zero step cannot start an rc",
+			args:    []string{"patch", "--rc", "--value=0", "1.2.3"},
+			wantErr: "positive version step",
+		},
+		{
+			name: "patch downgrade drops an existing rc",
+			args: []string{"patch", "--downgrade", "1.2.3-rc2"},
+			want: "1.2.2",
+		},
 	}
 
 	for _, tt := range tests {
