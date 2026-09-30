@@ -78,6 +78,16 @@ func TestHandleRCRules(t *testing.T) {
 			want: "1.2.4-rc1",
 		},
 		{
+			name: "major --rc resets lower components",
+			args: []string{"major", "--rc", "1.2.3-rc2"},
+			want: "2.0.0-rc1",
+		},
+		{
+			name: "minor --rc resets patch",
+			args: []string{"minor", "--rc", "1.2.3-rc2"},
+			want: "1.3.0-rc1",
+		},
+		{
 			name:    "downgrade rejects --rc",
 			args:    []string{"patch", "--downgrade", "--rc", "1.2.3"},
 			wantErr: "--rc cannot be combined with --downgrade",
@@ -121,6 +131,11 @@ func TestHandleRCRules(t *testing.T) {
 			name:    "promote rejects downgrade",
 			args:    []string{"rc", "--promote", "--downgrade", "1.2.3-rc2"},
 			wantErr: "--promote cannot be combined with --downgrade",
+		},
+		{
+			name:    "promote requires upgrade",
+			args:    []string{"rc", "--promote", "--upgrade=false", "1.2.3-rc2"},
+			wantErr: "--promote requires an upgrade",
 		},
 		{
 			name: "zero patch upgrade keeps rc",

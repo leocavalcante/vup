@@ -52,7 +52,7 @@ func (r *RC) Inc(v int) error {
 }
 
 func (r *RC) Dec(v int) error {
-	next, err := decrement(r.value, v, ErrInvalidVersion)
+	next, err := decrement(r.value, v, ErrRCLessThanZero)
 	if err != nil {
 		return err
 	}

@@ -81,8 +81,8 @@ func TestRC_Dec(t *testing.T) {
 func TestRC_Dec_Err(t *testing.T) {
 	r := &RC{value: 0, present: true}
 	err := r.Dec(1)
-	if err != ErrInvalidVersion {
-		t.Errorf("Dec() error = %v, wantErr %v", err, ErrInvalidVersion)
+	if err != ErrRCLessThanZero {
+		t.Errorf("Dec() error = %v, wantErr %v", err, ErrRCLessThanZero)
 	}
 
 	negative := &RC{value: 1, present: true}

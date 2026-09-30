@@ -58,6 +58,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 				if rb {
 					return fmt.Errorf("--promote cannot be combined with --downgrade")
 				}
+				if !up {
+					return fmt.Errorf("--promote requires an upgrade")
+				}
 				if !rcPresent(v.RC) {
 					return fmt.Errorf("rc command requires an existing rc suffix")
 				}
