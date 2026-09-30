@@ -30,9 +30,73 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 		if err != nil {
 			return err
 		}
+		if val < 0 {
+			return fmt.Errorf("value must not be negative")
+		}
+
+		wantRC := false
+		if cmd.Name() != "rc" {
+			wantRC, err = cmd.Flags().GetBool("rc")
+			if err != nil {
+				return err
+			}
+			if wantRC && rb {
+				return fmt.Errorf("--rc cannot be combined with --downgrade")
+			}
+			if wantRC && !up {
+				return fmt.Errorf("--rc requires an upgrade")
+			}
+			if wantRC && val == 0 {
+				return fmt.Errorf("--rc requires a positive version step")
+			}
+		}
+
+		if cmd.Name() == "rc" {
+			p, err := cmd.Flags().GetBool("promote")
+			if err != nil {
+				return err
+			}
+
+			if p {
+				if rb {
+					return fmt.Errorf("--promote cannot be combined with --downgrade")
+				}
+				if !up {
+					return fmt.Errorf("--promote requires an upgrade")
+				}
+				if !v.RC.Present() {
+					return fmt.Errorf("rc command requires an existing rc suffix")
+				}
+				v.RC.Clear()
+				_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
+				return err
+			}
+
+			if !v.RC.Present() {
+				return fmt.Errorf("rc command requires an existing rc suffix")
+			}
+		}
 
 		if up && !rb {
-			f(v).Inc(val)
+			if err := f(v).Inc(val); err != nil {
+				return err
+			}
+			if cmd.Name() != "rc" && val > 0 {
+				if wantRC {
+					switch cmd.Name() {
+					case "major":
+						v.Minor.Clear()
+						v.Patch.Clear()
+					case "minor":
+						v.Patch.Clear()
+					}
+					if err := v.RC.Set(1); err != nil {
+						return err
+					}
+				} else {
+					v.RC.Clear()
+				}
+			}
 		}
 
 		if rb {
@@ -40,9 +104,12 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			if err != nil {
 				return err
 			}
+			if cmd.Name() != "rc" && val > 0 {
+				v.RC.Clear()
+			}
 		}
 
-		_, err = fmt.Println(v)
+		_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
 		return err
 	}
 }

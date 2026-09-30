@@ -36,6 +36,7 @@ major.minor.patch
 | `vup major` | Updates the **major** part of the string |
 | `vup minor` | Updates the **minor** part of the string |
 | `vup patch` | Updates the **patch** part of the string |
+| `vup rc` | Updates or promotes the **release candidate** part of the string |
 
 ### Prefix
 
@@ -48,6 +49,32 @@ By default `vup` will upgrade (ie. increase) the version number, but you can add
 ```shell
 vup major -d v1.2.3
 # v0.2.3
+```
+
+### Release candidates
+
+Add `--rc` to a core version command to advance that component and start a
+release candidate series at `rc1`. Lower core components are reset when
+advancing a major or minor version.
+
+```shell
+vup minor --rc 1.2.3
+# 1.3.0-rc1
+```
+
+Use the `rc` command to increment an existing release candidate:
+
+```shell
+vup rc 1.3.0-rc1
+# 1.3.0-rc2
+```
+
+The `rc` command requires an existing `-rcN` suffix. Promote a candidate to its
+final release with `--promote`:
+
+```shell
+vup rc --promote 1.3.0-rc2
+# 1.3.0
 ```
 
 ### Examples

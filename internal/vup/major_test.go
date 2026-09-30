@@ -1,6 +1,7 @@
 package vup_test
 
 import (
+	"math"
 	"strconv"
 	"testing"
 
@@ -29,8 +30,12 @@ func TestMajor(t *testing.T) {
 
 func TestMajor_Inc(t *testing.T) {
 	m, _ := vup.NewMajor("1")
-	m.Inc(1)
+	assert.NoError(t, m.Inc(1))
 	assert.Equal(t, "2", m.String())
+
+	max, _ := vup.NewMajor(strconv.Itoa(math.MaxInt))
+	assert.Error(t, max.Inc(1))
+	assert.Equal(t, strconv.Itoa(math.MaxInt), max.String())
 }
 
 func TestMajor_Dec(t *testing.T) {

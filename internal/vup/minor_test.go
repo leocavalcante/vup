@@ -1,6 +1,7 @@
 package vup_test
 
 import (
+	"math"
 	"strconv"
 	"testing"
 
@@ -23,8 +24,12 @@ func TestMinor(t *testing.T) {
 
 func TestMinor_Inc(t *testing.T) {
 	m, _ := vup.NewMinor("1")
-	m.Inc(1)
+	assert.NoError(t, m.Inc(1))
 	assert.Equal(t, "2", m.String())
+
+	max, _ := vup.NewMinor(strconv.Itoa(math.MaxInt))
+	assert.Error(t, max.Inc(1))
+	assert.Equal(t, strconv.Itoa(math.MaxInt), max.String())
 }
 
 func TestMinor_Dec(t *testing.T) {
@@ -36,8 +41,8 @@ func TestMinor_Dec(t *testing.T) {
 	})
 
 	t.Run("error", func(t *testing.T) {
-		m, _ := vup.NewMinor("1")
+		m, _ := vup.NewMinor("0")
 		err := m.Dec(1)
-		assert.ErrorIs(t, err, vup.ErrMinorLessThanOne)
+		assert.ErrorIs(t, err, vup.ErrMinorLessThanZero)
 	})
 }

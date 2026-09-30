@@ -28,4 +28,30 @@ func TestVersion(t *testing.T) {
 		_, err := vup.NewVersion("1.2.a")
 		assert.Error(t, err)
 	})
+
+	t.Run("rc0 is kept", func(t *testing.T) {
+		v, err := vup.NewVersion("1.2.3-rc0")
+		assert.NoError(t, err)
+		assert.Equal(t, "1.2.3-rc0", v.String())
+	})
+
+	t.Run("rejects extra suffix", func(t *testing.T) {
+		_, err := vup.NewVersion("1.2.3-rc1-extra")
+		assert.Error(t, err)
+	})
+
+	t.Run("rejects empty suffix", func(t *testing.T) {
+		_, err := vup.NewVersion("1.2.3-")
+		assert.Error(t, err)
+	})
+
+	t.Run("rejects non-canonical rc", func(t *testing.T) {
+		_, err := vup.NewVersion("1.2.3-rc01")
+		assert.Error(t, err)
+	})
+
+	t.Run("rejects extra core component", func(t *testing.T) {
+		_, err := vup.NewVersion("1.2.3.4-rc1")
+		assert.Error(t, err)
+	})
 }

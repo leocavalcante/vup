@@ -9,10 +9,23 @@ type Version struct {
 	Major Part
 	Minor Part
 	Patch Part
+	RC    *RC
 }
 
 func NewVersion(v string) (*Version, error) {
-	ps := strings.Split(v, ".")
+	var rc string
+	p := strings.Split(v, "-")
+	if len(p) > 2 || (len(p) == 2 && p[1] == "") {
+		return nil, fmt.Errorf("invalid version string: %q", v)
+	}
+	if len(p) == 2 {
+		rc = p[1]
+	}
+
+	ps := strings.Split(p[0], ".")
+	if len(ps) != 3 {
+		return nil, fmt.Errorf("invalid version string: expected 3 dot-separated parts, got %d", len(ps))
+	}
 
 	ma, err := NewMajor(ps[0])
 	if err != nil {
@@ -29,13 +42,23 @@ func NewVersion(v string) (*Version, error) {
 		return nil, err
 	}
 
+	r, err := NewRC(rc)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Version{
 		Major: ma,
 		Minor: mi,
 		Patch: pa,
+		RC:    r,
 	}, nil
 }
 
 func (v *Version) String() string {
-	return fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
+	s := fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
+	if v.RC.Present() {
+		s = fmt.Sprintf("%s-%s", s, v.RC)
+	}
+	return s
 }

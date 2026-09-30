@@ -30,16 +30,37 @@ func NewMajor(s string) (*Major, error) {
 	}, nil
 }
 
-func (m *Major) Inc(i int) {
-	m.v += i
+func (m *Major) Inc(i int) error {
+	next, err := increment(m.v, i)
+	if err != nil {
+		return err
+	}
+	m.v = next
+	return nil
 }
 
 func (m *Major) Dec(i int) error {
-	if m.v <= 0 {
+	next, err := decrement(m.v, i, ErrMajorLessThanZero)
+	if err != nil {
+		return err
+	}
+	m.v = next
+	return nil
+}
+
+func (m *Major) Value() int {
+	return m.v
+}
+
+func (m *Major) Clear() {
+	m.v = 0
+}
+
+func (m *Major) Set(i int) error {
+	if i < 0 {
 		return ErrMajorLessThanZero
 	}
-
-	m.v -= i
+	m.v = i
 	return nil
 }
 
