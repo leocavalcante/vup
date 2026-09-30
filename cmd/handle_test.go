@@ -117,6 +117,21 @@ func TestHandleRCRules(t *testing.T) {
 			args: []string{"patch", "--downgrade", "1.2.3-rc2"},
 			want: "1.2.2",
 		},
+		{
+			name:    "promote rejects downgrade",
+			args:    []string{"rc", "--promote", "--downgrade", "1.2.3-rc2"},
+			wantErr: "--promote cannot be combined with --downgrade",
+		},
+		{
+			name: "zero patch upgrade keeps rc",
+			args: []string{"patch", "--value=0", "1.2.3-rc2"},
+			want: "1.2.3-rc2",
+		},
+		{
+			name: "zero patch downgrade keeps rc",
+			args: []string{"patch", "--downgrade", "--value=0", "1.2.3-rc2"},
+			want: "1.2.3-rc2",
+		},
 	}
 
 	for _, tt := range tests {

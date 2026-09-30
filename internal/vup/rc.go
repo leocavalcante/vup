@@ -2,7 +2,6 @@ package vup
 
 import (
 	"fmt"
-	"math"
 	"regexp"
 	"strconv"
 )
@@ -43,25 +42,21 @@ func (r *RC) Set(v int) {
 }
 
 func (r *RC) Inc(v int) error {
-	if v < 0 {
-		return fmt.Errorf("rc increment must not be negative")
+	next, err := increment(r.value, v)
+	if err != nil {
+		return err
 	}
-	if r.value > math.MaxInt-v {
-		return fmt.Errorf("rc increment overflows")
-	}
-	r.value += v
+	r.value = next
 	r.present = true
 	return nil
 }
 
 func (r *RC) Dec(v int) error {
-	if v < 0 {
-		return fmt.Errorf("rc decrement must not be negative")
+	next, err := decrement(r.value, v, ErrInvalidVersion)
+	if err != nil {
+		return err
 	}
-	if v > r.value {
-		return ErrInvalidVersion
-	}
-	r.value -= v
+	r.value = next
 	return nil
 }
 

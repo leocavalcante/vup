@@ -1,6 +1,7 @@
 package vup_test
 
 import (
+	"math"
 	"strconv"
 	"testing"
 
@@ -25,6 +26,10 @@ func TestPatch_Inc(t *testing.T) {
 	p, _ := vup.NewPatch("1")
 	assert.NoError(t, p.Inc(1))
 	assert.Equal(t, "2", p.String())
+
+	max, _ := vup.NewPatch(strconv.Itoa(math.MaxInt))
+	assert.Error(t, max.Inc(1))
+	assert.Equal(t, strconv.Itoa(math.MaxInt), max.String())
 }
 
 func TestPatch_Dec(t *testing.T) {

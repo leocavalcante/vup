@@ -21,15 +21,20 @@ func NewPatch(s string) (*Patch, error) {
 }
 
 func (p *Patch) Inc(i int) error {
-	p.v += i
+	next, err := increment(p.v, i)
+	if err != nil {
+		return err
+	}
+	p.v = next
 	return nil
 }
 
 func (p *Patch) Dec(i int) error {
-	if p.v-i < 0 {
-		return ErrPatchLessThanZero
+	next, err := decrement(p.v, i, ErrPatchLessThanZero)
+	if err != nil {
+		return err
 	}
-	p.v -= i
+	p.v = next
 	return nil
 }
 

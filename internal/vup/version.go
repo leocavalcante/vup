@@ -23,8 +23,8 @@ func NewVersion(v string) (*Version, error) {
 	}
 
 	ps := strings.Split(p[0], ".")
-	if len(ps) < 3 {
-		return nil, fmt.Errorf("invalid version string: expected at least 3 dot-separated parts, got %d", len(ps))
+	if len(ps) != 3 {
+		return nil, fmt.Errorf("invalid version string: expected 3 dot-separated parts, got %d", len(ps))
 	}
 
 	ma, err := NewMajor(ps[0])

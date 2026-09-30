@@ -21,15 +21,20 @@ func NewMinor(s string) (*Minor, error) {
 }
 
 func (m *Minor) Inc(i int) error {
-	m.v += i
+	next, err := increment(m.v, i)
+	if err != nil {
+		return err
+	}
+	m.v = next
 	return nil
 }
 
 func (m *Minor) Dec(i int) error {
-	if m.v-i < 0 {
-		return ErrMinorLessThanZero
+	next, err := decrement(m.v, i, ErrMinorLessThanZero)
+	if err != nil {
+		return err
 	}
-	m.v -= i
+	m.v = next
 	return nil
 }
 

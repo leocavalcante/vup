@@ -49,4 +49,9 @@ func TestVersion(t *testing.T) {
 		_, err := vup.NewVersion("1.2.3-rc01")
 		assert.Error(t, err)
 	})
+
+	t.Run("rejects extra core component", func(t *testing.T) {
+		_, err := vup.NewVersion("1.2.3.4-rc1")
+		assert.Error(t, err)
+	})
 }

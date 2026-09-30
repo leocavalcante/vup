@@ -31,15 +31,20 @@ func NewMajor(s string) (*Major, error) {
 }
 
 func (m *Major) Inc(i int) error {
-	m.v += i
+	next, err := increment(m.v, i)
+	if err != nil {
+		return err
+	}
+	m.v = next
 	return nil
 }
 
 func (m *Major) Dec(i int) error {
-	if m.v-i < 0 {
-		return ErrMajorLessThanZero
+	next, err := decrement(m.v, i, ErrMajorLessThanZero)
+	if err != nil {
+		return err
 	}
-	m.v -= i
+	m.v = next
 	return nil
 }
 

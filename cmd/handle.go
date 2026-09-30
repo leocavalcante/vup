@@ -55,6 +55,9 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 
 			if p {
+				if rb {
+					return fmt.Errorf("--promote cannot be combined with --downgrade")
+				}
 				if !rcPresent(v.RC) {
 					return fmt.Errorf("rc command requires an existing rc suffix")
 				}
@@ -76,7 +79,7 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			if err := f(v).Inc(val); err != nil {
 				return err
 			}
-			if cmd.Name() != "rc" {
+			if cmd.Name() != "rc" && val > 0 {
 				if wantRC {
 					switch cmd.Name() {
 					case "major":
@@ -97,7 +100,7 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			if err != nil {
 				return err
 			}
-			if cmd.Name() != "rc" {
+			if cmd.Name() != "rc" && val > 0 {
 				v.RC.Clear()
 			}
 		}
