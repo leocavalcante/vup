@@ -9,7 +9,7 @@ type Version struct {
 	Major Part
 	Minor Part
 	Patch Part
-	RC    Part
+	RC    *RC
 }
 
 func NewVersion(v string) (*Version, error) {
@@ -57,7 +57,7 @@ func NewVersion(v string) (*Version, error) {
 
 func (v *Version) String() string {
 	s := fmt.Sprintf("%s.%s.%s", v.Major, v.Minor, v.Patch)
-	if rc, ok := v.RC.(interface{ Present() bool }); ok && rc.Present() {
+	if v.RC.Present() {
 		s = fmt.Sprintf("%s-%s", s, v.RC)
 	}
 	return s

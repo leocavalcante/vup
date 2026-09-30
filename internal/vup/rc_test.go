@@ -140,7 +140,7 @@ func TestNewRC_Canonical(t *testing.T) {
 			if got.Value() != tc.want {
 				t.Errorf("Value() = %v, want %v", got.Value(), tc.want)
 			}
-			if !got.(*RC).Present() {
+			if !got.Present() {
 				t.Errorf("Present() = false, want true")
 			}
 		})

@@ -10,7 +10,7 @@ import (
 // without leading zeros. rc0 is valid.
 var rcPattern = regexp.MustCompile(`^rc(0|[1-9][0-9]*)$`)
 
-func NewRC(v string) (Part, error) {
+func NewRC(v string) (*RC, error) {
 	if v == "" {
 		return &RC{}, nil
 	}

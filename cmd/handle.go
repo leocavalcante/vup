@@ -64,7 +64,7 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 				if !up {
 					return fmt.Errorf("--promote requires an upgrade")
 				}
-				if !rcPresent(v.RC) {
+				if !v.RC.Present() {
 					return fmt.Errorf("rc command requires an existing rc suffix")
 				}
 				v.RC.Clear()
@@ -72,7 +72,7 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 				return err
 			}
 
-			if !rcPresent(v.RC) {
+			if !v.RC.Present() {
 				return fmt.Errorf("rc command requires an existing rc suffix")
 			}
 		}
@@ -112,9 +112,4 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 		_, err = fmt.Fprintln(cmd.OutOrStdout(), v)
 		return err
 	}
-}
-
-func rcPresent(p vup.Part) bool {
-	rc, ok := p.(interface{ Present() bool })
-	return ok && rc.Present()
 }
