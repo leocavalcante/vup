@@ -68,6 +68,11 @@ func TestHandleRCRules(t *testing.T) {
 			want: "1.2.3-rc0",
 		},
 		{
+			name: "increment existing rc",
+			args: []string{"rc", "1.2.3-rc1"},
+			want: "1.2.3-rc2",
+		},
+		{
 			name: "patch upgrade drops an existing rc",
 			args: []string{"patch", "1.2.3-rc2"},
 			want: "1.2.4",
