@@ -31,6 +31,17 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			return err
 		}
 
+		wantRC := false
+		if cmd.Name() != "rc" {
+			wantRC, err = cmd.Flags().GetBool("rc")
+			if err != nil {
+				return err
+			}
+			if wantRC && rb {
+				return fmt.Errorf("--rc cannot be combined with --downgrade")
+			}
+		}
+
 		if cmd.Name() == "rc" {
 			p, err := cmd.Flags().GetBool("promote")
 			if err != nil {
@@ -39,19 +50,19 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 
 			if p {
 				v.RC.Clear()
-				_, err := fmt.Println(v)
-				return err
+				cmd.Println(v)
+				return nil
+			}
+
+			if !rcPresent(v.RC) {
+				return fmt.Errorf("rc command requires an existing rc suffix")
 			}
 		}
 
 		if up && !rb {
 			f(v).Inc(val)
 			if cmd.Name() != "rc" {
-				rc, err := cmd.Flags().GetBool("rc")
-				if err != nil {
-					return err
-				}
-				if rc {
+				if wantRC {
 					switch cmd.Name() {
 					case "major":
 						v.Minor.Clear()
@@ -60,6 +71,8 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 						v.Patch.Clear()
 					}
 					v.RC.Set(1)
+				} else {
+					v.RC.Clear()
 				}
 			}
 		}
@@ -71,7 +84,12 @@ func handle(f func(*vup.Version) vup.Part) func(*cobra.Command, []string) error 
 			}
 		}
 
-		_, err = fmt.Println(v)
-		return err
+		cmd.Println(v)
+		return nil
 	}
+}
+
+func rcPresent(p vup.Part) bool {
+	rc, ok := p.(interface{ Present() bool })
+	return ok && rc.Present()
 }

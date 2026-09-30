@@ -74,10 +74,47 @@ func TestRC_Set(t *testing.T) {
 }
 
 func TestRC_Clear(t *testing.T) {
-	r := &RC{value: 1}
+	r := &RC{value: 1, present: true}
 	r.Clear()
 	if r.Value() != 0 {
 		t.Errorf("Clear() = %v, want %v", r.Value(), 0)
+	}
+	if r.Present() {
+		t.Errorf("Clear() present = true, want false")
+	}
+}
+
+func TestNewRC_Canonical(t *testing.T) {
+	valid := []struct {
+		in   string
+		want int
+	}{
+		{in: "rc0", want: 0},
+		{in: "rc1", want: 1},
+		{in: "rc10", want: 10},
+	}
+	for _, tc := range valid {
+		t.Run(tc.in, func(t *testing.T) {
+			got, err := NewRC(tc.in)
+			if err != nil {
+				t.Fatalf("NewRC() error = %v", err)
+			}
+			if got.Value() != tc.want {
+				t.Errorf("Value() = %v, want %v", got.Value(), tc.want)
+			}
+			if !got.(*RC).Present() {
+				t.Errorf("Present() = false, want true")
+			}
+		})
+	}
+
+	invalid := []string{"xrc1", "rc1rc2", "rc01", "rc", "RC1"}
+	for _, in := range invalid {
+		t.Run(in, func(t *testing.T) {
+			if _, err := NewRC(in); err == nil {
+				t.Fatalf("NewRC(%q) error = nil, want error", in)
+			}
+		})
 	}
 }
 
